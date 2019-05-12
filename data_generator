@@ -6,20 +6,20 @@ import numpy as np
 from PIL import ImageFont
 
 ### Image Setup
-image = ImageCaptcha(fonts = [r".\fonts\lato\Lato-Regular.ttf",
-                              r".\fonts\lato\Lato-Bold.ttf",
-                              r".\fonts\lato\Lato-Light.ttf",
-                              r".\fonts\quicksand\Quicksand-Regular.otf",
-                              r".\fonts\quicksand\Quicksand-Bold.otf",
-                              r".\fonts\quicksand\Quicksand-Light.otf",
-                              r".\fonts\open-sans\OpenSans-Regular.ttf",
-                              r".\fonts\open-sans\OpenSans-Bold.ttf",
-                              r".\fonts\open-sans\OpenSans-Light.ttf",
-                              r".\fonts\raleway\Raleway-Bold.ttf",
-                              r".\fonts\raleway\Raleway-Light.ttf",
-                              r".\fonts\raleway\Raleway-regular.ttf",
-                              r".\fonts\vera\Vera.ttf",
-                              r".\fonts\vera\VeraBd.ttf",
+image = ImageCaptcha(fonts = [r"./fonts/lato/Lato-Regular.ttf",
+                              r"./fonts/lato/Lato-Bold.ttf",
+                              r"./fonts/lato/Lato-Light.ttf",
+                              r"./fonts/quicksand/Quicksand-Regular.otf",
+                              r"./fonts/quicksand/Quicksand-Bold.otf",
+                              r"./fonts/quicksand/Quicksand-Light.otf",
+                              r"./fonts/open-sans/OpenSans-Regular.ttf",
+                              r"./fonts/open-sans/OpenSans-Bold.ttf",
+                              r"./fonts/open-sans/OpenSans-Light.ttf",
+                              r"./fonts/raleway/Raleway-Bold.ttf",
+                              r"./fonts/raleway/Raleway-Light.ttf",
+                              r"./fonts/raleway/Raleway-regular.ttf",
+                              r"./fonts/vera/Vera.ttf",
+                              r"./fonts/vera/VeraBd.ttf",
                               ], width = 64, height = 64)
 
 # Create Folders
@@ -38,7 +38,7 @@ def createFolder(directory):
 
 # Generate Data
 
-times = 1000                                   # number of pictures we want to generate for a single character
+times = 300                                   # number of pictures we want to generate for a single character
 
 letters_total = string.ascii_letters[:]
 

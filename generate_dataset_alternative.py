@@ -41,8 +41,10 @@ SOURCE_IMAGES = os.path.join(PATH, "*.png")
 
 address_text = "C:\\Users\\Jiaying Li\\PycharmProjects\\CS_230_Final_PROJECT\\images"
 #print(address_text+"\\" + "3.png")
+address_text = PATH
 addrs = []
-for i in range(1, 62001):
+#for i in range(1, 62001):
+for i in range(1, 18601):
 
     addrs.append(address_text + "\\" + str(i) + ".png")
 

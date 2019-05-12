@@ -24,7 +24,7 @@ import string
 import natsort
 
 shuffle_data = True  # shuffle the addresses
-
+createFolder('./datasets/')
 hdf5_train_path = './datasets/train_data.h5'  # file path for the created .hdf5 file
 hdf5_test_path = './datasets/test_data.h5'  # file path for the created .hdf5 file
 #cat_dog_train_path = 'E:/All about AI/train/*.jpg'  # the original data path

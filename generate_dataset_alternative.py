@@ -1,10 +1,6 @@
 # ------------------------------------------------------------------------------
-# The famous data set:cats vs dogs is used in this example. The data set contains
-# 12500 dog pictures and 12500 cat pictures. All the images are shuffled randomly
-# and 20000 images are used to train, 5000 images are used to test. The images
-# can be resized to different sizes but the size of the .hdf5 file differs very
-# far depending on the size of the images. The file is 1.14G when the size of the
-# images is (128,128) and 4.57G for (256,256), 18.3G for (512,512).
+# We generate the h5 file as our initial data. We have 90% training samples and 
+# 10% test/dev samples. The size of each image is 32x32.
 # ------------------------------------------------------------------------------
 
 ########################## first part: prepare data ###########################
@@ -40,12 +36,6 @@ PATH = os.path.abspath(os.path.join('.', 'images'))
 SOURCE_IMAGES = os.path.join(PATH, "*.png")
 
 # get all the image paths
-#addrs = glob.glob(cat_dog_train_path)
-#addrs = sorted(glob(SOURCE_IMAGES))
-#natsort.natsorted(addrs, reverse=False)
-
-address_text = "C:\\Users\\Jiaying Li\\PycharmProjects\\CS_230_Final_PROJECT\\images"
-#print(address_text+"\\" + "3.png")
 address_text = PATH
 addrs = []
 for i in range(1, 62001):
@@ -53,30 +43,18 @@ for i in range(1, 62001):
 
     addrs.append(address_text + "/" + str(i) + ".png")
 
-
-
-#print(address_list)
-
-
 classes = []
 
 #for number in range(0,62):
 for number in range(0,62):
     classes.append(number)
 
-
-
-# label the data as 0=cat, 1=dog
 column_names = ['count', 'character']
 data  = pd.read_csv('./data.csv', names = column_names)
 labels = data.character.tolist()
-#print (labels)
 
 #labels = [0 if 'cat' in addr else 1 for addr in addrs]
 labels.remove('character')
-#print (labels)
-#print(labels)
-#print(labels)
 # shuffle data
 if shuffle_data:
     c = list(zip(addrs, labels))  # use zip() to bind the images and labels together

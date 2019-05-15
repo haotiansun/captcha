@@ -45,18 +45,33 @@ def create_placeholders(n_x, n_y):
 
 def initialize_parameters():
     tf.set_random_seed(1)  # so that your "random" numbers match ours
-    W1 = tf.get_variable("W1", [25, 12288], initializer=tf.contrib.layers.xavier_initializer(seed=1))
-    b1 = tf.get_variable("b1", [25, 1], initializer=tf.zeros_initializer())
-    W2 = tf.get_variable("W2", [12, 25], initializer=tf.contrib.layers.xavier_initializer(seed=1))
-    b2 = tf.get_variable("b2", [12, 1], initializer=tf.zeros_initializer())
-    W3 = tf.get_variable("W3", [62, 12], initializer=tf.contrib.layers.xavier_initializer(seed=1))
-    b3 = tf.get_variable("b3", [62, 1], initializer=tf.zeros_initializer())
+    W1 = tf.get_variable("W1", [80, 1024], initializer=tf.contrib.layers.xavier_initializer(seed=1))
+    b1 = tf.get_variable("b1", [80, 1], initializer=tf.zeros_initializer())
+    W2 = tf.get_variable("W2", [60, 80], initializer=tf.contrib.layers.xavier_initializer(seed=1))
+    b2 = tf.get_variable("b2", [60, 1], initializer=tf.zeros_initializer())
+    W3 = tf.get_variable("W3", [30, 60], initializer=tf.contrib.layers.xavier_initializer(seed=1))
+    b3 = tf.get_variable("b3", [30, 1], initializer=tf.zeros_initializer())
+
+    W4 = tf.get_variable("W4", [20, 30], initializer=tf.contrib.layers.xavier_initializer(seed=1))
+    b4 = tf.get_variable("b4", [20, 1], initializer=tf.zeros_initializer())
+    W5 = tf.get_variable("W5", [10, 20], initializer=tf.contrib.layers.xavier_initializer(seed=1))
+    b5 = tf.get_variable("b5", [10, 1], initializer=tf.zeros_initializer())
+    W6 = tf.get_variable("W6", [62, 10], initializer=tf.contrib.layers.xavier_initializer(seed=1))
+    b6 = tf.get_variable("b6", [62, 1], initializer=tf.zeros_initializer())
+
     parameters = {"W1": W1,
                   "b1": b1,
                   "W2": W2,
                   "b2": b2,
                   "W3": W3,
-                  "b3": b3}
+                  "b3": b3,
+                  "W4": W4,
+                  "b4": b4,
+                  "W5": W5,
+                  "b5": b5,
+                  "W6": W6,
+                  "b6": b6
+                  }
     return parameters
 
 # Forward Propagation in tensorFlow
@@ -68,19 +83,36 @@ def forward_propagation(X, parameters):
     b2 = parameters['b2']
     W3 = parameters['W3']
     b3 = parameters['b3']
+    W4 = parameters['W4']
+    b4 = parameters['b4']
+    W5 = parameters['W5']
+    b5 = parameters['b5']
+    W6 = parameters['W6']
+    b6 = parameters['b6']
 
     Z1 = tf.add(tf.matmul(W1, X), b1)  # Z1 = np.dot(W1, X) + b1
+    
     A1 = tf.nn.relu(Z1)  # A1 = relu(Z1)
     Z2 = tf.add(tf.matmul(W2, A1), b2)  # Z2 = np.dot(W2, a1) + b2
+    
     A2 = tf.nn.relu(Z2)  # A2 = relu(Z2)
     Z3 = tf.add(tf.matmul(W3, A2), b3)  # Z3 = np.dot(W3,Z2) + b3
 
-    return Z3
+    A3 = tf.nn.sigmoid(Z3)  # A2 = relu(Z2)
+    Z4 = tf.add(tf.matmul(W4, A3), b4)  # Z3 = np.dot(W3,Z2) + b3
+
+    A4 = tf.nn.sigmoid(Z4)  # A2 = relu(Z2)
+    Z5 = tf.add(tf.matmul(W5, A4), b5)  # Z3 = np.dot(W3,Z2) + b3
+
+    A5 = tf.nn.relu(Z5)
+    Z6 = tf.add(tf.matmul(W6, A5), b6)
+
+    return Z6
 
 
-def compute_cost(Z3, Y):
+def compute_cost(Z6, Y):
    # to fit the tensorflow requirement for tf.nn.softmax_cross_entropy_with_logits(...,...)
-    logits = tf.transpose(Z3)
+    logits = tf.transpose(Z6)
     labels = tf.transpose(Y)
 
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
@@ -104,10 +136,10 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.0001,
     parameters = initialize_parameters()
 
     # Forward propagation: Build the forward propagation in the tensorflow graph
-    Z3 = forward_propagation(X, parameters)
+    Z6 = forward_propagation(X, parameters)
 
     # Cost function: Add cost function to tensorflow graph
-    cost = compute_cost(Z3, Y)
+    cost = compute_cost(Z6, Y)
 
     # Backpropagation: Define the tensorflow optimizer. Use an AdamOptimizer.
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
@@ -120,7 +152,7 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.0001,
 
         # Run the initialization
         sess.run(init)
-
+        foo = open("result_epoch1500_modified_2211.txt", "w")
         # Do the training loop
         for epoch in range(num_epochs):
 
@@ -128,11 +160,12 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.0001,
             num_minibatches = int(m / minibatch_size)  # number of minibatches of size minibatch_size in the train set
             seed = seed + 1
             minibatches = random_mini_batches(X_train, Y_train, minibatch_size, seed)
-
+            #batch_num = 0
             for minibatch in minibatches:
                 # Select a minibatch
                 (minibatch_X, minibatch_Y) = minibatch
-
+                #print("batch_num: ", batch_num)
+                #batch_num = batch_num + 1
                 # IMPORTANT: The line that runs the graph on a minibatch.
                 # Run the session to execute the "optimizer" and the "cost", the feedict should contain a minibatch for (X,Y).
                 _, minibatch_cost = sess.run([optimizer, cost], feed_dict={X: minibatch_X, Y: minibatch_Y})
@@ -140,8 +173,9 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.0001,
                 epoch_cost += minibatch_cost / num_minibatches
 
             # Print the cost every epoch
-            if print_cost == True and epoch % 100 == 0:
+            if print_cost == True and epoch % 5 == 0:
                 print("Cost after epoch %i: %f" % (epoch, epoch_cost))
+                foo.write(str(epoch_cost) + "\n")
             if print_cost == True and epoch % 5 == 0:
                 costs.append(epoch_cost)
 
@@ -157,13 +191,15 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.0001,
         print("Parameters have been trained!")
 
         # Calculate the correct predictions
-        correct_prediction = tf.equal(tf.argmax(Z3), tf.argmax(Y))
+        correct_prediction = tf.equal(tf.argmax(Z6), tf.argmax(Y))
 
         # Calculate accuracy on the test set
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 
         print("Train Accuracy:", accuracy.eval({X: X_train, Y: Y_train}))
         print("Test Accuracy:", accuracy.eval({X: X_test, Y: Y_test}))
-
+        foo.write("train accuracy: " + str(accuracy.eval({X: X_train, Y: Y_train})) + "\n")
+        foo.write("test accuracy: " + str(accuracy.eval({X: X_test, Y: Y_test})) + "\n")
+        foo.close()
         return parameters
 parameters = model(X_train, Y_train, X_test, Y_test)

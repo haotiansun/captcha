@@ -21,7 +21,12 @@ import pandas as pd
 from glob import glob
 import string
 
-import natsort
+def createFolder(directory):
+    try:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+    except OSError:
+        print ('Error: Creating directory. ' +  directory)
 
 shuffle_data = True  # shuffle the addresses
 createFolder('./datasets/')
@@ -43,10 +48,10 @@ address_text = "C:\\Users\\Jiaying Li\\PycharmProjects\\CS_230_Final_PROJECT\\im
 #print(address_text+"\\" + "3.png")
 address_text = PATH
 addrs = []
-#for i in range(1, 62001):
-for i in range(1, 18601):
+for i in range(1, 62001):
+#for i in range(1, 18601):
 
-    addrs.append(address_text + "\\" + str(i) + ".png")
+    addrs.append(address_text + "/" + str(i) + ".png")
 
 
 
@@ -55,6 +60,7 @@ for i in range(1, 18601):
 
 classes = []
 
+#for number in range(0,62):
 for number in range(0,62):
     classes.append(number)
 
@@ -98,8 +104,10 @@ test_labels = np.array(test_labels).astype(int)
 import numpy as np
 import h5py
 
-train_shape = (len(train_addrs), 64, 64, 3)
-test_shape = (len(test_addrs), 64, 64, 3)
+#train_shape = (len(train_addrs), 64, 64, 3)
+train_shape = (len(train_addrs), 32, 32)
+#test_shape = (len(test_addrs), 64, 64, 3)
+test_shape = (len(test_addrs), 32, 32)
 
 # open a hdf5 file and create arrays
 f_train = h5py.File(hdf5_train_path, mode='w')
@@ -133,8 +141,9 @@ for i in range(len(train_addrs)):
 
     addr = train_addrs[i]
     img = cv2.imread(addr)
-    img = cv2.resize(img, (64, 64), interpolation=cv2.INTER_CUBIC)  # resize to (128,128)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # cv2 load images as BGR, convert it to RGB
+    img = cv2.resize(img, (32, 32), interpolation=cv2.INTER_CUBIC)  # resize to (128,128)
+    #img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # cv2 load images as BGR, convert it to RGB
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     f_train["train_set_x"][i,...] = img[None]
 
 # loop over test paths
@@ -145,8 +154,9 @@ for i in range(len(test_addrs)):
 
     addr = test_addrs[i]
     img = cv2.imread(addr)
-    img = cv2.resize(img, (64, 64), interpolation=cv2.INTER_CUBIC)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = cv2.resize(img, (32, 32), interpolation=cv2.INTER_CUBIC)
+    #img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     f_test["test_set_x"][i, ...] = img[None]
 
 

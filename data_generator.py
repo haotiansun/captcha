@@ -6,7 +6,8 @@ import numpy as np
 from PIL import ImageFont
 
 ### Image Setup
-image = ImageCaptcha(fonts = [r"./fonts/lato/Lato-Regular.ttf",
+image = ImageCaptcha(fonts = [r"./Lato-Black.ttf",
+                              r"./fonts/lato/Lato-Regular.ttf",
                               r"./fonts/lato/Lato-Bold.ttf",
                               r"./fonts/lato/Lato-Light.ttf",
                               r"./fonts/quicksand/Quicksand-Regular.otf",
@@ -17,10 +18,10 @@ image = ImageCaptcha(fonts = [r"./fonts/lato/Lato-Regular.ttf",
                               r"./fonts/open-sans/OpenSans-Light.ttf",
                               r"./fonts/raleway/Raleway-Bold.ttf",
                               r"./fonts/raleway/Raleway-Light.ttf",
-                              r"./fonts/raleway/Raleway-regular.ttf",
+                              r"./fonts/raleway/Raleway-Regular.ttf",
                               r"./fonts/vera/Vera.ttf",
                               r"./fonts/vera/VeraBd.ttf",
-                              ], width = 64, height = 64)
+                              ], width = 32, height = 32)
 
 # Create Folders
 import os

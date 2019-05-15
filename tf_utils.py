@@ -74,19 +74,33 @@ def predict(X, parameters):
     b2 = tf.convert_to_tensor(parameters["b2"])
     W3 = tf.convert_to_tensor(parameters["W3"])
     b3 = tf.convert_to_tensor(parameters["b3"])
+    W4 = tf.convert_to_tensor(parameters["W4"])
+    b4 = tf.convert_to_tensor(parameters["b4"])
+    W5 = tf.convert_to_tensor(parameters["W5"])
+    b5 = tf.convert_to_tensor(parameters["b5"])
+    W6 = tf.convert_to_tensor(parameters["W6"])
+    b6 = tf.convert_to_tensor(parameters["b6"])
     
     params = {"W1": W1,
               "b1": b1,
               "W2": W2,
               "b2": b2,
               "W3": W3,
-              "b3": b3}
+              "b3": b3,
+              "W4": W4,
+              "b4": b4,
+              "W5": W5,
+              "b5": b5,
+              "W6": W6,
+              "b6": b6}
     
-    x = tf.placeholder("float", [12288, 1])
-    
-    z3 = forward_propagation_for_predict(x, params)
-    p = tf.argmax(z3)
-    
+    #x = tf.placeholder("float", [12288, 1])
+    x = tf.placeholder("float", [1024, 1])
+    #z5 = forward_propagation_for_predict(x, params)
+    z6 = forward_propagation_for_predict(x, params)
+    #p = tf.argmax(z5)
+    P = tf.argmax(z6)    
+
     sess = tf.Session()
     prediction = sess.run(p, feed_dict = {x: X})
         
@@ -111,13 +125,26 @@ def forward_propagation_for_predict(X, parameters):
     W2 = parameters['W2']
     b2 = parameters['b2']
     W3 = parameters['W3']
-    b3 = parameters['b3'] 
+    b3 = parameters['b3']
+    W4 = parameters['W4']
+    b4 = parameters['b4']
+    W5 = parameters['W5']
+    b5 = parameters['b5']
+    W6 = parameters['W6']
+    b6 = parameters['b6']
                                                            # Numpy Equivalents:
     Z1 = tf.add(tf.matmul(W1, X), b1)                      # Z1 = np.dot(W1, X) + b1
     A1 = tf.nn.relu(Z1)                                    # A1 = relu(Z1)
     Z2 = tf.add(tf.matmul(W2, A1), b2)                     # Z2 = np.dot(W2, a1) + b2
     A2 = tf.nn.relu(Z2)                                    # A2 = relu(Z2)
     Z3 = tf.add(tf.matmul(W3, A2), b3)                     # Z3 = np.dot(W3,Z2) + b3
-    
-    return Z3
+    A3 = tf.nn.sigmoid(Z3)                                    # A2 = relu(Z2)
+    Z4 = tf.add(tf.matmul(W4, A3), b4)                     # Z3 = np.dot(W3,Z2) + b3
+    A4 = tf.nn.sigmoid(Z4)                                    # A2 = relu(Z2)
+    Z5 = tf.add(tf.matmul(W5, A4), b5)                     # Z3 = np.dot(W3,Z2) + b3
+    A5 = tf.nn.relu(Z5)
+    Z6 = tf.add(tf.matmul(W6, A5), b6) 
+
+
+    return Z6
     

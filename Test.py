@@ -105,7 +105,7 @@ def forward_propagation(X, parameters):
     Z5 = tf.add(tf.matmul(W5, A4), b5)  # Z3 = np.dot(W3,Z2) + b3
 
     A5 = tf.nn.relu(Z5)
-    Z6 = tf.add(tf.matmul(W6, A5), b6)
+    Z6 = tf.add(tf.matmul(W6, A5), b6) #output layer
 
     return Z6
 

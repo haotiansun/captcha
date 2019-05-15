@@ -61,10 +61,10 @@ for number in range(0, 10):
 
 print('Finished number')
 
-#字母位数10
+#10 digits
 letter_dig = number_dig
 for letter in letters_total:
-    #第几个字母
+    #the ith digit
     for i in range (1, times+1):
         image.write(str(letter), './images/' + str(count) + '.png')
         save_count.append(count)
@@ -79,6 +79,7 @@ data = pd.DataFrame({"count" : save_count, "character" : save_char})
 header = ["count", "character"]
 
 print(data)
+#save data to csv
 data.to_csv('data.csv', encoding = 'utf-8', columns = header)
 
 end_time = time.time()
